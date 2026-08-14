@@ -1,0 +1,517 @@
+@import "tailwindcss";
+
+/* next-themes writes `class="dark"` / `class="light"` onto <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ *
+ * Design tokens — dark is the brand default, light is the alternate.
+ * ------------------------------------------------------------------ */
+:root,
+.dark {
+  color-scheme: dark;
+
+  --bg: #0d1117;
+  --bg-2: #0b0f14;
+  --surface: #111827;
+  --surface-2: #141c2b;
+  --hover: #0e1319;
+  --nav: rgb(13 17 23 / 0.72);
+
+  --line-1: rgb(230 237 243 / 0.06);
+  --line-2: rgb(230 237 243 / 0.09);
+  --line-3: rgb(230 237 243 / 0.12);
+  --line-4: rgb(230 237 243 / 0.17);
+  --line-5: rgb(230 237 243 / 0.24);
+  --line-6: rgb(230 237 243 / 0.32);
+
+  --txt: #e6edf3;
+  --txt-2: #cbd6e0;
+  --body: #b3bfcb;
+  --body-2: #a4b0bc;
+  --muted: #8d99a5;
+  --muted-2: #7d8996;
+  --dim: #6d7986;
+  --dim-2: #5e6a77;
+
+  --accent: #22c55e;
+  --accent-hi: #4ade80;
+  --accent-soft: rgb(34 197 94 / 0.14);
+  --accent-line: rgb(34 197 94 / 0.32);
+  --on-accent: #08120b;
+
+  --glow-1: rgb(34 197 94 / 0.16);
+  --glow-2: rgb(56 189 248 / 0.08);
+  --grain: 0.035;
+  --shadow-lift: 0 30px 70px -30px rgb(0 0 0 / 0.75);
+}
+
+.light {
+  color-scheme: light;
+
+  --bg: #f7f8f7;
+  --bg-2: #eff1f0;
+  --surface: #ffffff;
+  --surface-2: #f4f6f5;
+  --hover: #f1f3f2;
+  --nav: rgb(247 248 247 / 0.78);
+
+  --line-1: rgb(13 17 23 / 0.08);
+  --line-2: rgb(13 17 23 / 0.11);
+  --line-3: rgb(13 17 23 / 0.14);
+  --line-4: rgb(13 17 23 / 0.18);
+  --line-5: rgb(13 17 23 / 0.24);
+  --line-6: rgb(13 17 23 / 0.3);
+
+  --txt: #0d1117;
+  --txt-2: #1f2a36;
+  --body: #2e3a46;
+  --body-2: #3a4652;
+  --muted: #4e5a66;
+  --muted-2: #5a6672;
+  --dim: #6a7682;
+  --dim-2: #7b8794;
+
+  --accent: #15803d;
+  --accent-hi: #166534;
+  --accent-soft: rgb(21 128 61 / 0.1);
+  --accent-line: rgb(21 128 61 / 0.28);
+  --on-accent: #ffffff;
+
+  --glow-1: rgb(21 128 61 / 0.1);
+  --glow-2: rgb(14 116 144 / 0.06);
+  --grain: 0.02;
+  --shadow-lift: 0 24px 60px -32px rgb(13 17 23 / 0.28);
+}
+
+/* ------------------------------------------------------------------ *
+ * Tailwind theme bridge
+ * ------------------------------------------------------------------ */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-hover: var(--hover);
+
+  --color-line-1: var(--line-1);
+  --color-line-2: var(--line-2);
+  --color-line-3: var(--line-3);
+  --color-line-4: var(--line-4);
+  --color-line-5: var(--line-5);
+  --color-line-6: var(--line-6);
+
+  --color-txt: var(--txt);
+  --color-txt-2: var(--txt-2);
+  --color-body: var(--body);
+  --color-body-2: var(--body-2);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-dim: var(--dim);
+  --color-dim-2: var(--dim-2);
+
+  --color-accent: var(--accent);
+  --color-accent-hi: var(--accent-hi);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+  --color-on-accent: var(--on-accent);
+
+  /* Newsreader and JetBrains Mono carry no Arabic glyphs, so the Arabic face
+     is appended to every stack — the browser falls back per glyph, which
+     keeps Arabic shaping and diacritics intact inside mono-styled labels. */
+  --font-display: var(--font-serif), "Newsreader", var(--font-arabic-body),
+    "IBM Plex Sans Arabic", Georgia, serif;
+  --font-mono: var(--font-mono-jb), "JetBrains Mono", var(--font-arabic-body),
+    "IBM Plex Sans Arabic", ui-monospace, monospace;
+  --font-arabic: var(--font-arabic-body), "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-arabic-display: var(--font-arabic-title), "Jomhuria", var(--font-arabic-body),
+    "IBM Plex Sans Arabic", serif;
+
+  --shadow-lift: var(--shadow-lift);
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-brand: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-marquee: marquee 42s linear infinite;
+  --animate-marquee-rtl: marquee-rtl 42s linear infinite;
+  --animate-drift: drift 18s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2.6s ease-out infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-blink: blink 1.05s step-end infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-scroll-hint: scroll-hint 2.2s ease-in-out infinite;
+  --animate-grain: grain 800ms steps(6) infinite;
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes marquee-rtl {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(50%, 0, 0); }
+}
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(3%, -4%, 0) scale(1.06); }
+  66% { transform: translate3d(-3%, 3%, 0) scale(0.97); }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.55; }
+  70% { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes shimmer {
+  from { background-position: -180% 0; }
+  to { background-position: 180% 0; }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes scroll-hint {
+  0% { transform: translateY(-40%); opacity: 0; }
+  35% { opacity: 1; }
+  100% { transform: translateY(120%); opacity: 0; }
+}
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-4%, -4%); }
+  20% { transform: translate(-8%, 3%); }
+  30% { transform: translate(5%, -6%); }
+  40% { transform: translate(-2%, 8%); }
+  50% { transform: translate(-6%, 2%); }
+  60% { transform: translate(7%, 0); }
+  70% { transform: translate(0, 6%); }
+  80% { transform: translate(3%, -3%); }
+  90% { transform: translate(-3%, 5%); }
+}
+
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+@layer base {
+  * {
+    border-color: var(--line-2);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--bg);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--txt);
+    font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    transition: background-color 0.4s var(--ease-brand), color 0.4s var(--ease-brand);
+  }
+
+  [dir="rtl"] body,
+  body[dir="rtl"] {
+    font-family: var(--font-arabic);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-2);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-5);
+    border: 2px solid var(--bg-2);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
+
+  /* Hide the native cursor only where a custom one is actually rendered. */
+  @media (hover: hover) and (pointer: fine) {
+    html[data-cursor="custom"] body {
+      cursor: none;
+    }
+    html[data-cursor="custom"] a,
+    html[data-cursor="custom"] button,
+    html[data-cursor="custom"] input,
+    html[data-cursor="custom"] textarea,
+    html[data-cursor="custom"] select,
+    html[data-cursor="custom"] label {
+      cursor: none;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Components / utilities
+ * ------------------------------------------------------------------ */
+@layer components {
+  .font-ar-display {
+    font-family: var(--font-arabic-display);
+    font-weight: 400;
+    line-height: 0.95;
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .shell-narrow {
+    width: 100%;
+    max-width: 1100px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-feature-settings: "ss01";
+  }
+
+
+  .hairline {
+    border-color: var(--line-2);
+  }
+
+  /* Ambient background: two slow-drifting accent blooms + a fine grid. */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .ambient::before,
+  .ambient::after {
+    content: "";
+    position: absolute;
+    width: 46vw;
+    height: 46vw;
+    min-width: 380px;
+    min-height: 380px;
+    border-radius: 999px;
+    filter: blur(90px);
+    will-change: transform;
+  }
+  .ambient::before {
+    top: -12vw;
+    inset-inline-start: -8vw;
+    background: radial-gradient(circle at 50% 50%, var(--glow-1), transparent 70%);
+    animation: var(--animate-drift);
+  }
+  .ambient::after {
+    bottom: -18vw;
+    inset-inline-end: -10vw;
+    background: radial-gradient(circle at 50% 50%, var(--glow-2), transparent 70%);
+    animation: var(--animate-drift);
+    animation-duration: 26s;
+    animation-direction: reverse;
+  }
+
+  .grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, var(--line-1) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line-1) 1px, transparent 1px);
+    background-size: 92px 92px;
+    mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 30%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 30%, transparent 78%);
+  }
+
+  .grain {
+    position: fixed;
+    inset: -50%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: var(--grain);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: var(--animate-grain);
+  }
+
+  /* Link with a wipe underline that follows reading direction. */
+  .link-wipe {
+    position: relative;
+    display: inline-block;
+  }
+  .link-wipe::after {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: var(--wipe-origin, left);
+    transition: transform 0.42s var(--ease-out-quint);
+  }
+  [dir="rtl"] .link-wipe::after {
+    --wipe-origin: right;
+  }
+  .link-wipe:hover::after,
+  .link-wipe:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .shimmer-text {
+    background: linear-gradient(
+      100deg,
+      var(--dim) 20%,
+      var(--txt) 40%,
+      var(--txt) 46%,
+      var(--dim) 66%
+    );
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: var(--animate-shimmer);
+  }
+
+  .noise-card {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .rule-x {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--line-4) 12%,
+      var(--line-4) 88%,
+      transparent
+    );
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .perspective {
+    perspective: 1200px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .mask-fade-x {
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .drag-none {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Translated labels.
+ *
+ * Deliberately unlayered so the RTL reset outranks Tailwind's utilities:
+ * Arabic is cursive, so letter-spacing pulls joined letters apart and
+ * text-transform does nothing. Never pair these with `tracking-*` or
+ * `uppercase` utilities — the class owns both.
+ * ------------------------------------------------------------------ */
+.label {
+  font-family: var(--font-mono);
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+.label-plain {
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+.label-tight {
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+[dir="rtl"] .label,
+[dir="rtl"] .label-plain,
+[dir="rtl"] .label-tight {
+  font-family: var(--font-arabic);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+:root {
+  --gutter: 20px;
+}
+@media (min-width: 640px) {
+  :root { --gutter: 32px; }
+}
+@media (min-width: 1024px) {
+  :root { --gutter: 44px; }
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion preferences — kill everything decorative, keep content usable.
+ * ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain,
+  .ambient {
+    display: none;
+  }
+}
